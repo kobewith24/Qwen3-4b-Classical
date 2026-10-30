@@ -16,3 +16,7 @@ eval/reports/answers_*.json
 # 系统
 .DS_Store
 Thumbs.db
+
+# 本地踩坑记录，不推送
+TROUBLESHOOTING.md
+
