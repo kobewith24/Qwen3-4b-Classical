@@ -1,0 +1,16 @@
+# 核心训练
+torch
+transformers
+peft
+trl
+datasets
+accelerate
+bitsandbytes
+sentencepiece
+# 模型/数据下载（国内源）
+modelscope
+# GGUF 转换（可选，Ollama 也可直接导入 safetensors）
+gguf
+# 评测
+requests
+sacrebleu

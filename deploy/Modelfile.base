@@ -1,0 +1,15 @@
+# 基座模型（评测对照用）：Qwen3-4B-Instruct-2507，与微调模型使用相同模板
+FROM ../weights/qwen3-4b-base-q8.gguf
+
+TEMPLATE """{{- range .Messages }}{{- if eq .Role "system" }}<|im_start|>system
+{{ .Content }}<|im_end|>
+{{- else if eq .Role "user" }}<|im_start|>user
+{{ .Content }}<|im_end|>
+{{- else if eq .Role "assistant" }}<|im_start|>assistant
+{{ .Content }}<|im_end|>
+{{- end }}{{- end }}<|im_start|>assistant
+"""
+
+PARAMETER temperature 0.7
+PARAMETER top_p 0.8
+PARAMETER stop <|im_end|>
