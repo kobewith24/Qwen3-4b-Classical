@@ -20,3 +20,7 @@ Thumbs.db
 # 本地踩坑记录，不推送
 TROUBLESHOOTING.md
 
+
+data/classical_dataset_v2/
+server_bundle/
+server_bundle.zip

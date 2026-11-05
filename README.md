@@ -1,7 +1,7 @@
-# 面向文言文垂域的 Qwen3-4B 高效微调
+# 面向文言文垂域的 Qwen3-4B 微调
 
-> 在 **Windows 单机（RTX 4060 Laptop 8GB）** 上完成垂域大模型微调全流程：
-> 数据构建 → 4bit QLoRA 微调 → 权重合并 → GGUF 转换 → Ollama 部署 → 客观评测。
+> 在 **A6000 48GB** 上完成垂域大模型微调全流程：
+> 30k 多任务数据 → bf16 LoRA + completion-only loss → 权重合并 → GGUF 转换 → Ollama 部署 → 客观评测。
 
 ## 项目简介
 
@@ -15,7 +15,7 @@
 
 ## 技术栈
 
-- 微调：Python、PEFT（LoRA/QLoRA）、TRL（SFTTrainer）、bitsandbytes（4bit NF4）
+- 微调：PEFT（LoRA）、TRL（SFTTrainer）、Transformers
 - 部署：Ollama（GGUF 导入，OpenAI 兼容 API）
 - 评测：gujilab/chinese-classical-bench（6 任务），chrF / 标点 F1 / 完全匹配
 
@@ -26,11 +26,11 @@ Qwen3-4B-Classical/
 ├─ model/                     # 基座 Qwen3-4B-Instruct-2507（ModelScope）
 ├─ data/
 │  ├─ raw/                    # 原始语料（translate / punctuate）
-│  └─ classical_dataset/      # 混合训练集（13,000 条）
+│  └─ classical_dataset/      # 30k 多任务训练集
 ├─ train/
-│  ├─ finetune.py             # 4bit QLoRA 训练
+│  ├─ finetune.py             # bf16 LoRA + completion-only
 │  ├─ merge.py                # LoRA 合并导出 fp16
-│  └─ training_log.json       # 显存 / loss 记录
+│  └─ training_log.json
 ├─ weights/                   # LoRA adapter 与合并权重
 ├─ deploy/Modelfile           # Ollama 导入配置
 ├─ eval/
@@ -58,21 +58,21 @@ python -c "from modelscope import snapshot_download; snapshot_download('Qwen/Qwe
 # 2. 下载语料（translate.jsonl / punctuate.jsonl）到 data/raw/
 #    https://hf-mirror.com/datasets/gujilab/chinese-classical-corpus
 
-# 3. 构建混合数据集（古译今 / 今译古 / 断句 + 通用对话）
+# 3. 构建 30k 多任务数据集（翻译 / 断句 / 压缩 / 填空 / 通用）
 python data\build_dataset.py
 
-# 4. QLoRA 微调（4bit，batch=1，梯度累积 8）
-python train\finetune.py
+# 4. A6000 bf16 LoRA 微调（batch 8，梯度累积 4，seq 2048）
+python train\finetune.py --precision bf16 --epochs 2 --batch-size 8 --grad-accum 4 --seq-len 2048 --gradient-checkpointing
 
 # 5. 合并权重
-python train\merge.py
+python train\merge.py --adapter weights\lora_adapter --output weights\Qwen3-4B-Classical-fp16
 
-# 6. 转 GGUF 并导入 Ollama
-python llama.cpp\convert_hf_to_gguf.py weights\Qwen3-4B-Classical-fp16 --outfile weights\qwen3-4b-classical-f16.gguf
+# 6. 转 q8 GGUF 并导入 Ollama
+python deploy\llama.cpp\convert_hf_to_gguf.py weights\Qwen3-4B-Classical-fp16 --outfile weights\qwen3-4b-classical-q8.gguf --outtype q8_0
 cd deploy; ollama create qwen3-classical -f Modelfile
 
-# 7. 评测（基座 vs 微调）
-python eval\eval_classical.py --limit 20
+# 7. 评测（基座 vs 微调，100 题/任务）
+python eval\run_full_eval.py --ft-model qwen3-classical --limit 100
 ```
 
 ## 实验结果
@@ -81,33 +81,35 @@ python eval\eval_classical.py --limit 20
 
 | 项目 | 数值 |
 |---|---|
-| 训练样本 | 13,000 条（85% 文言指令 + 15% 通用对话） |
-| 训练步数 | 1,625 步（1 epoch，batch=1 × 梯度累积 8） |
-| 量化方式 | 4bit NF4 + LoRA r=32 + 梯度检查点 |
-| 训练显存峰值 | **4.87 GB / 8 GB**（RTX 4060 Laptop，单卡可训） |
-| 训练时长 | 约 2 小时 46 分 |
-| Loss | 2.48 → 1.22（mean token accuracy 0.78） |
+| 训练样本 | 30,000 条（翻译 16k、断句 6k、压缩 3k、填空 3k、通用 2k） |
+| 设备 | A6000 48GB |
+| 方式 | bf16 LoRA + completion-only loss |
+| 训练时长 | 4h21m（15,685s） |
+| Loss | 0.480（completion-only 口径） |
+| 显存峰值 | 18.99GB |
 
-### 评测（chinese-classical-bench，每任务 20 条 held-out）
+### 评测（chinese-classical-bench，100 题/任务）
 
-| 任务 | 指标 | 基座 Qwen3-4B | 微调后 | 提升 |
-|---|---|---|---|---|
-| 古文断句 | 标点 F1 | 0.218 | **0.402** | **+84%**（相对） |
-| 古译今 / 白译古 | chrF | 0.276 | 0.301 | +9% |
-| 白话→文言压缩 | chrF | 0.170 | 0.218 | +28% |
-| 字义解释 | chrF | 0.042 | 0.068 | +62% |
-| 填空（一字） | 完全匹配 | 0.050 | 0.050 | 0 |
-| 成语出处 | 书名命中 | 0.250 | 0.150 | −0.10 |
-| **平均** | — | **0.168** | **0.198** | **+18%** |
+| 任务 | 指标 | base | 微调 | 微调-base |
+|---|---|---:|---:|---:|
+| 翻译 | chrF | 0.192 | 0.219 | +0.027 |
+| 古文断句 | 标点 F1 | 0.333 | **0.482** | +0.150 |
+| 填空 | 完全匹配 | 0.100 | **0.200** | +0.100 |
+| 字义解释 | chrF | 0.048 | **0.101** | +0.054 |
+| 白话→文言压缩 | chrF | 0.192 | 0.215 | +0.023 |
+| 成语出处 | 书名命中 | 0.256 | 0.128 | −0.128 |
+| **平均** | — | **0.187** | **0.224** | **+0.038** |
 
-> 评测集为 gujilab/chinese-classical-bench，已剔除与训练语料重叠的题目。
-> 基座 Qwen3-4B-Instruct-2507 本身文言能力就不弱，因此整体增益集中在**断句**（+84%）和**白话→文言压缩**（+28%），
-> 翻译提升有限；成语出处一项在 20 条小样本上出现回退，属于噪声/个例，不宜过度解读。
+> 已按 `input[:60]` 剔除与训练集重叠的题目；去重后实际条数为
+> 翻译 96、断句 75、填空 100、字义 100、压缩 99、成语 78。
+> 增益集中在断句 (+0.150)、填空 (+0.100)、字义 (+0.054)；
+> 成语出处仍回退 (−0.128)，压缩基本持平。完整明细见
+> [eval/reports/classical_eval.md](eval/reports/classical_eval.md)。
 
 ### 部署
 
-- 量化：q8_0 GGUF（4.0GB），Ollama 全 GPU 推理，约 38 tok/s
-- 模型名：`qwen3-classical`（微调）、`qwen3-base`（对照）
+- q8_0 GGUF（约 4.0GB），Ollama 全 GPU 推理
+- 模型名：`qwen3-classical`、`qwen3-base`（对照）
 
 ## 参考
 

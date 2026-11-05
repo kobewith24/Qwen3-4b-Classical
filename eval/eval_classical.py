@@ -45,9 +45,9 @@ PUNCT = set("，。；：？！、「」『』（）《》…—·")
 def load_items(limit):
     """加载基准并剔除与训练集重叠的题目"""
     train_blob = ""
+    from datasets import load_from_disk
     ds_dir = os.path.join(BASE_DIR, "data", "classical_dataset")
     if os.path.isdir(ds_dir):
-        from datasets import load_from_disk
         ds = load_from_disk(ds_dir)
         train_blob = "\n".join(ds[i]["text"] for i in range(len(ds)))
 

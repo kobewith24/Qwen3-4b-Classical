@@ -1,5 +1,4 @@
-# Ollama Modelfile：导入转换后的 GGUF（Qwen3 ChatML 模板，关闭 thinking）
-# 用法：cd deploy && ollama create qwen3-classical -f Modelfile
+﻿#q8_0 GGUF，Ollama 导入，Qwen3 ChatML，关闭 thinking
 FROM ../weights/qwen3-4b-classical-q8.gguf
 
 TEMPLATE """{{- range .Messages }}{{- if eq .Role "system" }}<|im_start|>system
