@@ -24,3 +24,11 @@ TROUBLESHOOTING.md
 data/classical_dataset_v2/
 server_bundle/
 server_bundle.zip
+
+# v2 产物：数据与二进制不进仓库
+data/v2/
+deploy/llama-bin/
+*.zip
+*.gguf
+api/reports/*.csv
+resume_entry_v2.tex

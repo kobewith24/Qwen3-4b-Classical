@@ -1,0 +1,161 @@
+{
+  "tag": "e1_8000",
+  "backend": "hf",
+  "meta": {
+    "backend": "hf",
+    "base_model": "D:\\Projects\\Qwen3-4B-Classical\\model/Qwen3-4B-Instruct-2507",
+    "ft_model": "",
+    "base_url": "http://127.0.0.1:8000/v1",
+    "api_key": "",
+    "base_name": "qwen3-base",
+    "ft_name": "qwen3-classical",
+    "vllm": false,
+    "tag": "e1_8000",
+    "limit": 0,
+    "batch_size": 8,
+    "load_4bit": true,
+    "suites": "bench,ood,general",
+    "adapter": "D:\\Projects\\Qwen3-4B-Classical\\weights\\lora_e1_8000",
+    "only": ""
+  },
+  "sets": {
+    "base": {
+      "bench": {
+        "translate": {
+          "task": "translate",
+          "n": 100,
+          "score": 0.1959,
+          "avg_len": 40.5,
+          "len_ratio": 1.05
+        },
+        "punctuate": {
+          "task": "punctuate",
+          "n": 100,
+          "score": 0.3654,
+          "avg_len": 228.1,
+          "len_ratio": 1.203
+        },
+        "fill_in": {
+          "task": "fill_in",
+          "n": 100,
+          "score": 0.03,
+          "avg_len": 78.9,
+          "len_ratio": 78.88
+        },
+        "char_gloss": {
+          "task": "char_gloss",
+          "n": 100,
+          "score": 0.0504,
+          "avg_len": 7.1,
+          "len_ratio": 1.179
+        },
+        "compress": {
+          "task": "compress",
+          "n": 100,
+          "score": 0.1793,
+          "avg_len": 68.5,
+          "len_ratio": 0.887
+        },
+        "idiom_source": {
+          "task": "idiom_source",
+          "n": 100,
+          "score": 0.34,
+          "avg_len": 185.0,
+          "len_ratio": 5.817
+        }
+      },
+      "ood": {
+        "punctuate": {
+          "task": "punctuate",
+          "n": 120,
+          "score": 0.3957,
+          "avg_len": 221.2,
+          "len_ratio": 1.052
+        },
+        "translate_c2m": {
+          "task": "translate",
+          "n": 120,
+          "score": 0.2488,
+          "avg_len": 34.0,
+          "len_ratio": 0.95
+        },
+        "translate_m2c": {
+          "task": "translate",
+          "n": 120,
+          "score": 0.2717,
+          "avg_len": 25.2,
+          "len_ratio": 1.191
+        }
+      }
+    },
+    "ft": {
+      "bench": {
+        "translate": {
+          "task": "translate",
+          "n": 100,
+          "score": 0.2225,
+          "avg_len": 30.5,
+          "len_ratio": 0.792
+        },
+        "punctuate": {
+          "task": "punctuate",
+          "n": 100,
+          "score": 0.4149,
+          "avg_len": 176.8,
+          "len_ratio": 0.933
+        },
+        "fill_in": {
+          "task": "fill_in",
+          "n": 100,
+          "score": 0.11,
+          "avg_len": 3.0,
+          "len_ratio": 3.01
+        },
+        "char_gloss": {
+          "task": "char_gloss",
+          "n": 100,
+          "score": 0.0922,
+          "avg_len": 6.2,
+          "len_ratio": 1.028
+        },
+        "compress": {
+          "task": "compress",
+          "n": 100,
+          "score": 0.2186,
+          "avg_len": 89.7,
+          "len_ratio": 1.162
+        },
+        "idiom_source": {
+          "task": "idiom_source",
+          "n": 100,
+          "score": 0.06,
+          "avg_len": 14.2,
+          "len_ratio": 0.446
+        }
+      },
+      "ood": {
+        "punctuate": {
+          "task": "punctuate",
+          "n": 120,
+          "score": 0.4559,
+          "avg_len": 202.5,
+          "len_ratio": 0.963
+        },
+        "translate_c2m": {
+          "task": "translate",
+          "n": 120,
+          "score": 0.2778,
+          "avg_len": 27.8,
+          "len_ratio": 0.776
+        },
+        "translate_m2c": {
+          "task": "translate",
+          "n": 120,
+          "score": 0.3393,
+          "avg_len": 21.5,
+          "len_ratio": 1.017
+        }
+      }
+    }
+  }
+}

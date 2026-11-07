@@ -1,0 +1,69 @@
+{
+  "tag": "gguf_q8",
+  "backend": "openai",
+  "meta": {
+    "backend": "openai",
+    "base_model": "D:\\Projects\\Qwen3-4B-Classical\\model/Qwen3-4B-Instruct-2507",
+    "ft_model": "",
+    "base_url": "http://127.0.0.1:11434/v1",
+    "api_key": "",
+    "base_name": "qwen3-base",
+    "ft_name": "classical-2k",
+    "vllm": false,
+    "tag": "gguf_q8",
+    "limit": 0,
+    "batch_size": 1,
+    "load_4bit": false,
+    "suites": "bench",
+    "adapter": "",
+    "only": "ft"
+  },
+  "sets": {
+    "ft": {
+      "bench": {
+        "translate": {
+          "task": "translate",
+          "n": 100,
+          "score": 0.2329,
+          "avg_len": 31.1,
+          "len_ratio": 0.806
+        },
+        "punctuate": {
+          "task": "punctuate",
+          "n": 100,
+          "score": 0.4329,
+          "avg_len": 180.8,
+          "len_ratio": 0.954
+        },
+        "fill_in": {
+          "task": "fill_in",
+          "n": 100,
+          "score": 0.1,
+          "avg_len": 3.8,
+          "len_ratio": 3.76
+        },
+        "char_gloss": {
+          "task": "char_gloss",
+          "n": 100,
+          "score": 0.0661,
+          "avg_len": 3.3,
+          "len_ratio": 0.544
+        },
+        "compress": {
+          "task": "compress",
+          "n": 100,
+          "score": 0.2325,
+          "avg_len": 79.4,
+          "len_ratio": 1.029
+        },
+        "idiom_source": {
+          "task": "idiom_source",
+          "n": 100,
+          "score": 0.21,
+          "avg_len": 14.1,
+          "len_ratio": 0.442
+        }
+      }
+    }
+  }
+}
