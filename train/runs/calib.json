@@ -1,0 +1,69 @@
+{
+  "run_name": "calib",
+  "base_model": "Qwen3-4B-Instruct-2507",
+  "data": "D:\\Projects\\Qwen3-4B-Classical\\data\\v2",
+  "world_size": 1,
+  "precision": "4bit",
+  "epochs": 1.0,
+  "lr": 0.00015,
+  "batch_size": 1,
+  "grad_accum": 8,
+  "effective_batch": 8,
+  "seq_len": 1024,
+  "lora": {
+    "r": 32,
+    "alpha": 64
+  },
+  "train_samples": 200,
+  "gpu": "NVIDIA GeForce RTX 4060 Laptop GPU",
+  "peak_reserved_gb": 4.52,
+  "train_runtime_s": 229.94,
+  "train_loss": 2.544568634033203,
+  "token_stats": [
+    {
+      "task": "punctuate",
+      "samples": 19,
+      "supervised_tokens": 3781,
+      "token_share": 0.4262,
+      "avg_tokens": 199.0
+    },
+    {
+      "task": "c2m",
+      "samples": 78,
+      "supervised_tokens": 2505,
+      "token_share": 0.2823,
+      "avg_tokens": 32.1
+    },
+    {
+      "task": "m2c",
+      "samples": 71,
+      "supervised_tokens": 1619,
+      "token_share": 0.1825,
+      "avg_tokens": 22.8
+    },
+    {
+      "task": "source",
+      "samples": 32,
+      "supervised_tokens": 967,
+      "token_share": 0.109,
+      "avg_tokens": 30.2
+    }
+  ],
+  "eval_history": [
+    {
+      "eval_loss": 1.8605750799179077,
+      "eval_runtime": 98.9608,
+      "eval_samples_per_second": 4.487,
+      "eval_steps_per_second": 4.487,
+      "eval_entropy": 0.48805706656059705,
+      "eval_mean_token_accuracy": 0.6863929205783853,
+      "eval_num_tokens": 22144.0
+    }
+  ],
+  "loss_history": [
+    {
+      "step": 20,
+      "loss": 2.544568634033203
+    }
+  ]
+}

@@ -1,0 +1,113 @@
+{
+  "run_name": "e1_2000",
+  "base_model": "Qwen3-4B-Instruct-2507",
+  "data": "D:\\Projects\\Qwen3-4B-Classical\\data\\v2",
+  "world_size": 1,
+  "precision": "4bit",
+  "epochs": 1.0,
+  "lr": 0.00015,
+  "batch_size": 1,
+  "grad_accum": 8,
+  "effective_batch": 8,
+  "seq_len": 1024,
+  "lora": {
+    "r": 32,
+    "alpha": 64
+  },
+  "train_samples": 2000,
+  "gpu": "NVIDIA GeForce RTX 4060 Laptop GPU",
+  "peak_reserved_gb": 4.95,
+  "train_runtime_s": 1454.1,
+  "train_loss": 1.0374481658935546,
+  "token_stats": [
+    {
+      "task": "punctuate",
+      "samples": 178,
+      "supervised_tokens": 35181,
+      "token_share": 0.4103,
+      "avg_tokens": 197.6
+    },
+    {
+      "task": "c2m",
+      "samples": 717,
+      "supervised_tokens": 21307,
+      "token_share": 0.2485,
+      "avg_tokens": 29.7
+    },
+    {
+      "task": "m2c",
+      "samples": 712,
+      "supervised_tokens": 17192,
+      "token_share": 0.2005,
+      "avg_tokens": 24.1
+    },
+    {
+      "task": "source",
+      "samples": 393,
+      "supervised_tokens": 12056,
+      "token_share": 0.1406,
+      "avg_tokens": 30.7
+    }
+  ],
+  "eval_history": [
+    {
+      "eval_loss": 1.137829303741455,
+      "eval_runtime": 120.0362,
+      "eval_samples_per_second": 3.699,
+      "eval_steps_per_second": 3.699,
+      "eval_entropy": 1.0672481230183228,
+      "eval_mean_token_accuracy": 0.7534064229678463,
+      "eval_num_tokens": 279414.0
+    }
+  ],
+  "loss_history": [
+    {
+      "step": 20,
+      "loss": 2.193400001525879
+    },
+    {
+      "step": 40,
+      "loss": 1.0126129150390626
+    },
+    {
+      "step": 60,
+      "loss": 1.083263874053955
+    },
+    {
+      "step": 80,
+      "loss": 1.057846736907959
+    },
+    {
+      "step": 100,
+      "loss": 0.8698251724243165
+    },
+    {
+      "step": 120,
+      "loss": 0.9448747634887695
+    },
+    {
+      "step": 140,
+      "loss": 0.7691297054290771
+    },
+    {
+      "step": 160,
+      "loss": 0.8310111045837403
+    },
+    {
+      "step": 180,
+      "loss": 1.0168986320495605
+    },
+    {
+      "step": 200,
+      "loss": 0.9755945205688477
+    },
+    {
+      "step": 220,
+      "loss": 0.9993448257446289
+    },
+    {
+      "step": 240,
+      "loss": 0.7464208126068115
+    }
+  ]
+}

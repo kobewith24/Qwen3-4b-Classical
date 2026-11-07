@@ -1,0 +1,64 @@
+{
+  "run_name": "smoke",
+  "base_model": "Qwen3-4B-Instruct-2507",
+  "data": "D:\\Projects\\Qwen3-4B-Classical\\data\\v2",
+  "world_size": 1,
+  "precision": "4bit",
+  "epochs": 1.0,
+  "lr": 0.00015,
+  "batch_size": 1,
+  "grad_accum": 2,
+  "effective_batch": 2,
+  "seq_len": 1024,
+  "lora": {
+    "r": 32,
+    "alpha": 64
+  },
+  "train_samples": 32,
+  "gpu": "NVIDIA GeForce RTX 4060 Laptop GPU",
+  "peak_reserved_gb": 4.4,
+  "train_runtime_s": 127.16,
+  "train_loss": 3.8434836069742837,
+  "token_stats": [
+    {
+      "task": "c2m",
+      "samples": 14,
+      "supervised_tokens": 385,
+      "token_share": 0.3246,
+      "avg_tokens": 27.5
+    },
+    {
+      "task": "punctuate",
+      "samples": 2,
+      "supervised_tokens": 367,
+      "token_share": 0.3094,
+      "avg_tokens": 183.5
+    },
+    {
+      "task": "source",
+      "samples": 7,
+      "supervised_tokens": 224,
+      "token_share": 0.1889,
+      "avg_tokens": 32.0
+    },
+    {
+      "task": "m2c",
+      "samples": 9,
+      "supervised_tokens": 210,
+      "token_share": 0.1771,
+      "avg_tokens": 23.3
+    }
+  ],
+  "eval_history": [
+    {
+      "eval_loss": 3.330920457839966,
+      "eval_runtime": 98.3796,
+      "eval_samples_per_second": 4.513,
+      "eval_steps_per_second": 4.513,
+      "eval_entropy": 0.30618226551188593,
+      "eval_mean_token_accuracy": 0.658033506156088,
+      "eval_num_tokens": 624.0
+    }
+  ],
+  "loss_history": []
+}

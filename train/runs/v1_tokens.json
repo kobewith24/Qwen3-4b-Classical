@@ -1,0 +1,56 @@
+{
+  "run_name": "v1",
+  "data": "../data/classical_dataset",
+  "n": 30000,
+  "token_stats": [
+    {
+      "task": "punctuate",
+      "samples": 6000,
+      "supervised_tokens": 1190203,
+      "token_share": 0.4972,
+      "avg_tokens": 198.4
+    },
+    {
+      "task": "general",
+      "samples": 2000,
+      "supervised_tokens": 653712,
+      "token_share": 0.2731,
+      "avg_tokens": 326.9
+    },
+    {
+      "task": "c2m",
+      "samples": 6730,
+      "supervised_tokens": 216326,
+      "token_share": 0.0904,
+      "avg_tokens": 32.1
+    },
+    {
+      "task": "m2c",
+      "samples": 8000,
+      "supervised_tokens": 205588,
+      "token_share": 0.0859,
+      "avg_tokens": 25.7
+    },
+    {
+      "task": "compress",
+      "samples": 3000,
+      "supervised_tokens": 77105,
+      "token_share": 0.0322,
+      "avg_tokens": 25.7
+    },
+    {
+      "task": "translate",
+      "samples": 1270,
+      "supervised_tokens": 41691,
+      "token_share": 0.0174,
+      "avg_tokens": 32.8
+    },
+    {
+      "task": "fill",
+      "samples": 3000,
+      "supervised_tokens": 9022,
+      "token_share": 0.0038,
+      "avg_tokens": 3.0
+    }
+  ]
+}
